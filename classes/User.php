@@ -37,12 +37,38 @@ class  users extends db{
         } 
         
     }
+
+
+    public function login($email,$password){
+        if(empty($email)||empty($password)){
+            return 'all fields are required';
+        }
+
+        $sql="SELECT *from Users where email=:email";
+        $stmt=$this->connect()->prepare($sql);
+        $stmt->execute(['email'=>$email]);
+        $email=$stmt->fetch();
+        if(!$email){
+            return "email is incorrect";
+        }
+
+        $sql="SELECT*FROM Users where password=:password";
+        $stmt=$this->connect()->prepare($sql);
+        $stmt->execute(['password'=>$password]);
+        $password=$stmt->fetch();
+        if(!$password){
+            return "password is incorrect";
+        }
+
+            return 1;
+    } 
     
    
 }
 
 $user=new users();
-echo $user->signup('h','mg@gmail.com','Cathhh@123'); 
+// echo $user->signup('h','mg@gmail.com','Cathhh@123'); 
+// echo $user->login('meryem@gmail.com','123'); 
 
 
 
