@@ -1,3 +1,17 @@
+<?php
+
+require_once "../config/database.php";
+
+
+if(!empty($_SESSION["user_id"])){
+  $id = $_SESSION["user_id"];
+}else{
+  header("Location:login.php");
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -310,7 +324,7 @@
                           </g>
                         </svg>
                         Schedules</a>
-                      <a href="javascript:void(0)"
+                      <a href="logout.php"
                         class="text-sm text-gray-800 cursor-pointer flex items-center p-2 rounded-md hover:bg-[#ffece1] dropdown-item transition duration-300 ease-in-out">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] mr-4 fill-current"
                           viewBox="0 0 6 6">

@@ -1,3 +1,33 @@
+<?php 
+
+require_once "../classes/User.php";
+
+$user = new users();
+
+if(!empty($_SESSION["user_id"])){
+  header("Location:admin.php");
+}
+
+
+if(isset($_POST["submit"])){
+
+  $username = $_POST["username"];
+  $email = $_POST["email"];
+  $password = $_POST["password"];
+  $confirmpassword = $_POST["confirmpassword"];
+
+  $result = $user->signup($username , $email , $password , $confirmpassword);
+
+  if($result == 1){
+      echo "<script>alert('Register Succeful');</script>";
+  }else{
+      echo '<script>alert("'.$result.'");</script>';
+  }
+}
+
+?>
+
+
 <!doctype html>
 <html>
 <head>
@@ -13,7 +43,6 @@
       <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
         <div class="max-w-xl w-full">
        
-
           <div class="p-8 rounded-2xl bg-white shadow">
             <h2 class="text-gray-800 text-center text-2xl font-bold">Sign Up</h2>
             <form class="mt-8 space-y-4"  method="post" autocomplete="off">
