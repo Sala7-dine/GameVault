@@ -409,7 +409,7 @@
             otherItem.classList.add('text-gray-800');
           });
 
-          // Add classes to the clicked item
+          // Add classes to the clicked 
           item.classList.add('bg-[#ffece1]', 'text-orange-700');
           item.classList.remove('text-gray-800');
         });
