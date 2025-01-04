@@ -18,7 +18,13 @@
     if($result){
 
       $_SESSION["user_id"] = $result;
-      header("Location:admin.php");
+      $res = $user->getUser($_SESSION["user_id"]);
+
+      if($res["role"] == "admin"){
+        header("Location:admin.php");
+      }else{
+        header("Location:index.php");
+      }
 
     }else{
       echo '<script>alert("Incorrect email or password");</script>';

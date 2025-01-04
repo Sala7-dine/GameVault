@@ -83,6 +83,16 @@ class users extends db{
     } 
     
 
+    public function getUsers(){
+
+        $query = "SELECT * FROM users;";
+        $stmt = $this->connexion->prepare($query);  
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+    }
+
     public function getUser($user_id){
 
         $query = "SELECT * FROM users WHERE user_id = :id";
@@ -93,6 +103,24 @@ class users extends db{
         return $stmt->fetch();
 
     }
+
+
+    public function UpdateRole($user_id , $role){
+
+        $query = "UPDATE `users` SET `role` = :role WHERE `users`.`user_id` = :id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam("role", $role);
+        $stmt->bindParam("id", $user_id);
+        
+        try {
+            $stmt->execute();
+            return 1;
+        }catch(PDOException $e){
+            die("Erreur lors de Update role : " . $e);
+        }
+
+
+    }   
 
 }
 
