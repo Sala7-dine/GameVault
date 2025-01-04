@@ -1,3 +1,37 @@
+<?php 
+
+  require_once "../classes/User.php";
+
+  $user = new users();
+
+  if(!empty($_SESSION["user_id"])){
+    header("Location:admin.php");
+  }
+
+  if(isset($_POST["submit"])){
+
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $result = $user->login($email , $password);
+
+    if($result){
+
+      $_SESSION["user_id"] = $result;
+      header("Location:admin.php");
+
+    }else{
+      echo '<script>alert("Incorrect email or password");</script>';
+
+    }
+  }
+
+
+?>
+
+
+
+
 <!doctype html>
 <html>
 
