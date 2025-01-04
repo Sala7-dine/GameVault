@@ -82,6 +82,18 @@ class users extends db{
         return $e["user_id"];
     } 
     
+
+    public function getUser($user_id){
+
+        $query = "SELECT * FROM users WHERE user_id = :id";
+        $stmt = $this->connexion->prepare($query);  
+        $stmt->bindParam(":id" , $user_id);
+        $stmt->execute();
+
+        return $stmt->fetch();
+
+    }
+
 }
 
 
