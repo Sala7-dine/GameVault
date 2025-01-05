@@ -45,6 +45,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   }
 
+  if(isset($_POST["status"])){
+
+    $status = $_POST["status"];
+    $id = $_POST["user_id"];
+
+    if($status == "on"){
+
+      $suspended = "suspended";
+      $user->Bannes($id , $suspended);  
+      header("Location:admin.php");
+
+    }elseif($status == "off"){
+
+      $active = "active";
+      $user->Bannes($id , $active);  
+      header("Location:admin.php");
+
+    }
+  
+  }
+
 
   
   
@@ -74,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!--------------------------------------------------- DASHBOARD ---------------------------------------------------------------->
 
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 hidden">
+        <section id="dashboard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 ">
 
               <!-- Card 1 -->
               <div class="bg-white rounded-lg shadow p-6">
@@ -141,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <!------------------------------------------------ GESTION DES JEUX ------------------------------------------------------------->
           <!--------------------------------------------- GESTION DES UTILISATER ---------------------------------------------------------->
 
-          <section class="flex flex-col items-center bg-gray-50 min-h-screen p-6">
+          <section id="user" class="flex flex-col items-center bg-gray-50 min-h-screen p-6 hidden">
             <!-- Header -->
             <div class="w-full max-w-7xl bg-white shadow-lg rounded-lg p-6 space-y-6">
               <div class="flex justify-between items-center">
@@ -206,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <tr class="odd:bg-gray-100">
                       <td class="p-4 text-md font-bold">
-                        1
+                      <?= $User["user_id"]; ?>
                       </td>
                       <td class="p-4 text-sm">
                         <div class="flex items-center cursor-pointer w-max">
@@ -229,12 +250,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                       </td>
                       <td class="p-4">
-                        <label class="relative cursor-pointer">
-                          <input type="checkbox" class="sr-only peer" <?= $User["status"] === "suspended" ? "checked" : "" ?>  />
-                          <div
-                            class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500">
-                          </div>
-                        </label>
+
+                        <form action="admin.php" method="POST">
+                        <input type="hidden" name="user_id" value="<?= $User["user_id"]; ?>">
+                        <input type="hidden" name="status" value="off">
+                          <label class="relative cursor-pointer">
+                            <input type="checkbox" onchange="this.form.submit()" name="status" value="<?= $User["status"] === "active" ? "on" : "off" ?>" class="sr-only peer" <?= $User["status"] === "suspended" ? "checked" : "" ?>  />
+                            <div
+                              class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500">
+                            </div>
+                          </label>
+                        </form>
+                       
                       </td>
                       <td class="p-4">
                       
@@ -268,11 +295,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </section>
 
-
-
-
-
-
           <!----------------------------------------------- GESTION DES CONTENU ----------------------------------------------------------->
 
       </section>
@@ -283,7 +305,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
- 
+<script>
+
+  let dashboardBtn = document.getElementById("dashboardBtn");
+  let dashboard = document.getElementById("dashboard");
+  let user = document.getElementById("user");
+  let userBtn = document.getElementById("userBtn");
+
+
+  dashboardBtn.addEventListener("click" , ()=>{
+
+    dashboard.style.display = "flex";
+    user.style.display = "none";
+
+  });
+
+
+  userBtn.addEventListener("click" , ()=>{
+
+    user.style.display = "flex";
+    dashboard.style.display = "none";
+
+  });
+
+
+
+</script> 
   
 </body>
 </html>
