@@ -107,7 +107,7 @@ class users extends db{
 
     public function UpdateRole($user_id , $role){
 
-        $query = "UPDATE `users` SET `role` = :role WHERE `users`.`user_id` = :id";
+        $query = "UPDATE users SET role = :role WHERE user_id = :id";
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam("role", $role);
         $stmt->bindParam("id", $user_id);
@@ -118,9 +118,23 @@ class users extends db{
         }catch(PDOException $e){
             die("Erreur lors de Update role : " . $e);
         }
-
-
     }   
+
+
+    public function deleteUser($user_id){
+
+        $query = "DELETE FROM users WHERE user_id = :id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(":id" , $user_id);
+        
+        try{
+            $stmt->execute();
+            return 1;
+        }catch(PDOException $e){
+            die("Erreur Lors de Suppression : " . $e);
+        }
+
+    }
 
 }
 
