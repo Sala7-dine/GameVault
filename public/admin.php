@@ -15,10 +15,60 @@ $users = $user->getUsers();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-  $userId = intval($_POST['user_id']);
-  $role = $_POST['role'];
-  $user->UpdateRole($userId , $role);
-  header("Location:admin.php");
+
+  if(isset($_POST["role"])){
+
+    $userId = intval($_POST['user_id']);
+    $role = $_POST['role'];
+    
+    $result = $user->UpdateRole($userId , $role);
+
+    if($result){
+      header("Location:admin.php");
+    }else{
+      echo $result;
+    }
+
+  }
+
+  if(isset($_POST["delete"])){
+
+    $id = $_POST["user_id"];
+    
+    $result = $user->deleteUser($id);
+
+    if($result){
+      header("Location:admin.php");
+    }else{
+      echo $result;
+    }
+
+  }
+
+  if(isset($_POST["status"])){
+
+    $status = $_POST["status"];
+    $id = $_POST["user_id"];
+
+    if($status == "on"){
+
+      $suspended = "suspended";
+      $user->Bannes($id , $suspended);  
+      header("Location:admin.php");
+
+    }elseif($status == "off"){
+
+      $active = "active";
+      $user->Bannes($id , $active);  
+      header("Location:admin.php");
+
+    }
+  
+  }
+
+
+  
+  
 
 }
 
@@ -45,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!--------------------------------------------------- DASHBOARD ---------------------------------------------------------------->
 
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 hidden">
+        <section id="dashboard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 ">
 
               <!-- Card 1 -->
               <div class="bg-white rounded-lg shadow p-6">
@@ -112,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <!------------------------------------------------ GESTION DES JEUX ------------------------------------------------------------->
           <!--------------------------------------------- GESTION DES UTILISATER ---------------------------------------------------------->
 
-          <section class="flex flex-col items-center bg-gray-50 min-h-screen p-6">
+          <section id="user" class="flex flex-col items-center bg-gray-50 min-h-screen p-6 hidden">
             <!-- Header -->
             <div class="w-full max-w-7xl bg-white shadow-lg rounded-lg p-6 space-y-6">
               <div class="flex justify-between items-center">
@@ -177,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <tr class="odd:bg-gray-100">
                       <td class="p-4 text-md font-bold">
-                        1
+                      <?= $User["user_id"]; ?>
                       </td>
                       <td class="p-4 text-sm">
                         <div class="flex items-center cursor-pointer w-max">
@@ -200,26 +250,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                       </td>
                       <td class="p-4">
-                        <label class="relative cursor-pointer">
-                          <input type="checkbox" class="sr-only peer" <?= $User["status"] === "suspended" ? "checked" : "" ?>  />
-                          <div
-                            class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500">
-                          </div>
-                        </label>
+
+                        <form action="admin.php" method="POST">
+                        <input type="hidden" name="user_id" value="<?= $User["user_id"]; ?>">
+                        <input type="hidden" name="status" value="off">
+                          <label class="relative cursor-pointer">
+                            <input type="checkbox" onchange="this.form.submit()" name="status" value="<?= $User["status"] === "active" ? "on" : "off" ?>" class="sr-only peer" <?= $User["status"] === "suspended" ? "checked" : "" ?>  />
+                            <div
+                              class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500">
+                            </div>
+                          </label>
+                        </form>
+                       
                       </td>
                       <td class="p-4">
-                      <button type="button"
-                          class="px-4 py-2 flex items-center justify-center rounded text-white text-sm tracking-wider font-medium border-none outline-none bg-red-600 hover:bg-red-700 active:bg-red-600">
-                          <span class="border-r border-white pr-3">Delete</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="11px" fill="currentColor" class="ml-3 inline" viewBox="0 0 320.591 320.591">
-                            <path
-                              d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-                              data-original="#000000" />
-                            <path
-                              d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-                              data-original="#000000" />
-                          </svg>
-                        </button>
+                      
+                      <form action="admin.php" method="POST">
+                      <input type="hidden" name="user_id" value="<?= $User["user_id"]; ?>">
+                        <button type="submit" name="delete"
+                            class="px-4 py-2 flex items-center justify-center rounded text-white text-sm tracking-wider font-medium border-none outline-none bg-red-600 hover:bg-red-700 active:bg-red-600">
+                            <span class="border-r border-white pr-3">Delete</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11px" fill="currentColor" class="ml-3 inline" viewBox="0 0 320.591 320.591">
+                              <path
+                                d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+                                data-original="#000000" />
+                              <path
+                                d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+                                data-original="#000000" />
+                            </svg>
+                          </button>
+                      </form>
+                     
                       </td>
                     </tr>
 
@@ -234,11 +295,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </section>
 
-
-
-
-
-
           <!----------------------------------------------- GESTION DES CONTENU ----------------------------------------------------------->
 
       </section>
@@ -249,7 +305,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
- 
+<script>
+
+  let dashboardBtn = document.getElementById("dashboardBtn");
+  let dashboard = document.getElementById("dashboard");
+  let user = document.getElementById("user");
+  let userBtn = document.getElementById("userBtn");
+
+
+  dashboardBtn.addEventListener("click" , ()=>{
+
+    dashboard.style.display = "flex";
+    user.style.display = "none";
+
+  });
+
+
+  userBtn.addEventListener("click" , ()=>{
+
+    user.style.display = "flex";
+    dashboard.style.display = "none";
+
+  });
+
+
+
+</script> 
   
 </body>
 </html>

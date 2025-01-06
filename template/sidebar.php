@@ -10,8 +10,8 @@
           <div class="py-6 px-6">
             <ul class="space-y-2">
               <li>
-                <a href="javascript:void(0)"
-                  class="menu-item text-orange-700 text-sm flex items-center cursor-pointer bg-[#ffece1] hover:bg-[#ffece1] rounded-md px-3 py-3 transition-all duration-300">
+                <button id="dashboardBtn"
+                  class="menu-item text-orange-700 text-sm w-full flex items-center cursor-pointer bg-[#ffece1] hover:bg-[#ffece1] rounded-md px-3 py-3 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-4"
                     viewBox="0 0 24 24">
                     <path
@@ -22,7 +22,7 @@
                       data-original="#000000" />
                   </svg>
                   <span>Dashboard</span>
-                </a>
+                </button>
               </li>
               <li>
                 <a href="javascript:void(0)"
@@ -40,7 +40,7 @@
                 </a>
               </li>
               <li>
-                <a href="javascript:void(0)"
+                <button id="userBtn"
                   class="menu-item text-gray-800 text-sm flex items-center cursor-pointer hover:bg-[#ffece1] rounded-md px-3 py-3 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-4"
                     viewBox="0 0 64 64">
@@ -52,7 +52,7 @@
                       clip-rule="evenodd" data-original="#000000" />
                   </svg>
                   <span>Gestion des utilisateurs</span>
-                </a>
+                </button>
               </li>
               <li>
                 <a href="javascript:void(0)"
