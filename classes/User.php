@@ -121,12 +121,51 @@ class users extends db
         } catch (PDOException $e) {
             die("Erreur lors de Update role : " . $e);
         }
+    }
 
 
-    }   
 
+    public function edit_profile_info($user_id, $username, $email, $password,$confirm_password)
+    {
+        if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
+            return false;
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
+        $sql = "SELECT * FROM Users where email =:email and user_id !=$user_id";
+        $stmt = $this->connexion->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch();
+
+        if ($result) {
+            return false;
+        }
+        $password_validation = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/';
+
+        if (!preg_match($password_validation, $password) || $password != $confirm_password) {
+            return false;
+        }
+
+
+        $hash = md5($password);
+        $query = "UPDATE users SET username=:username , email=:email , password=:password where user_id=$user_id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hash);
+
+        try {
+           
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+
+    
 }
-
-
-
-?>
