@@ -1,4 +1,16 @@
-<header class='z-50 bg-[#f7f6f9] sticky top-0 pt-8'>
+<?php
+require_once "../config/database.php";
+require_once "../classes/User.php";
+
+$user = new users();
+$user_id = $_SESSION["user_id"] ?? "";
+$username =  $user->getUser($user_id);
+
+?>
+
+
+<header 
+class='z-50 bg-[#f7f6f9] sticky top-0 pt-8'>
           <div class='flex flex-wrap items-center w-full relative tracking-wide'>
             <div class='flex items-center gap-y-6 max-sm:flex-col z-50 w-full pb-2'>
               <div
@@ -61,7 +73,7 @@
                 </div>
                 <div class="dropdown-menu relative flex shrink-0 group">
                   <div class="flex items-center gap-4">
-                    <p class="text-gray-500 text-sm">Hi, John</p>
+                    <p class="text-gray-500 text-sm">Hi, <?= $username["username"] ?></p>
                     <img src="https://readymadeui.com/team-1.webp" alt="profile-pic"
                       class="w-[38px] h-[38px] rounded-full border-2 border-gray-300 cursor-pointer" />
                   </div>
