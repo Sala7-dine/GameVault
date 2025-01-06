@@ -166,6 +166,38 @@ class users extends db
         }
     }
 
+    public function deleteUser($user_id){
+
+        $query = "DELETE FROM users WHERE user_id = :id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(":id" , $user_id);
+        
+        try{
+            $stmt->execute();
+            return 1;
+        }catch(PDOException $e){
+            die("Erreur Lors de Suppression : " . $e);
+        }
+
+    }
+
+
+    public function Bannes($user_id , $status){
+
+        $query = "UPDATE users SET status = :status WHERE user_id = :id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam("status", $status);
+        $stmt->bindParam("id", $user_id);
+        
+        try {
+            $stmt->execute();
+            return 1;
+        }catch(PDOException $e){
+            die("Erreur lors de Update status : " . $e);
+        }
+
+    }
+
 
     
 }
