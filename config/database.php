@@ -6,7 +6,8 @@ class db{
 
     private $DB_host='localhost';
     private $DB_user='root';
-    private $DB_pass='1234';
+    // private $DB_pass='1234';
+    private $DB_pass='';
     private $DB_name='DB_Game_Vault';
 
     protected function connect(){
