@@ -16,9 +16,6 @@ $username =  $user->getUser($user_id);
 
 $favoris = new Favoris();
 
-$library=new library();
-
-
 if (isset($_POST['gameId_btn'])) {
 
   $jeu_id = $_POST['gameId_btn'];
