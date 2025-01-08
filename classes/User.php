@@ -8,7 +8,6 @@ class users extends db
 
     public function __construct()
     {
-
         $this->connexion = $this->connect();
     }
 
@@ -29,7 +28,7 @@ class users extends db
 
         if ($result) {
             return 'email already exist ';
-        }
+        } 
 
         $password_validation = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/';
 
@@ -43,6 +42,7 @@ class users extends db
         $stmt->bindParam(':name', $username);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hash);
+
 
         try {
 
@@ -87,7 +87,6 @@ class users extends db
 
     public function getUsers()
     {
-
         $query = "SELECT * FROM users;";
         $stmt = $this->connexion->prepare($query);
         $stmt->execute();
@@ -193,10 +192,11 @@ class users extends db
             $stmt->execute();
             return 1;
         }catch(PDOException $e){
-            die("Erreur lors de Update status : " . $e);
+            die("Erreur lors de Update status : " . $e);  
         }
 
     }
+    
 
 
     
