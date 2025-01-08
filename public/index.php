@@ -1,18 +1,42 @@
-<?php 
+<?php
 
-  require_once "../config/database.php";
-  include_once "../classes/User.php";
-  include_once "../classes/Game.php";
+require_once "../config/database.php";
+include_once "../classes/User.php";
+include_once "../classes/Game.php";
+include_once "../classes/Favorite.php";
 
-  $game = new Game();
+$game = new Game();
 
-  $games = $game->getGames();
+$games = $game->getGames();
+
+$user = new users();
+$user_id = $_SESSION["user_id"] ?? "";
+$username =  $user->getUser($user_id);
+
+$favoris = new Favoris();
+
+
+if (isset($_POST['gameId_btn'])) {
+
+  $jeu_id = $_POST['gameId_btn'];
+  $result = $favoris->add_favoris($user_id, $jeu_id);
+  if ($result) {
+    header("location:index.php?game_added");
+  } else {
+    header("location:index.php?game_already_added");
+   
+
+  }
+}
+
+
 
 ?>
 
 
 <!doctype html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +75,7 @@
               today</button>
           </div>
         </div>
-       
+
 
       </div>
       <img src="https://readymadeui.com/bg-effect.svg" class="absolute inset-0 w-full h-full" />
@@ -65,61 +89,81 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-12 max-lg:max-w-3xl max-md:max-w-md mx-auto">
 
-        <?php foreach($games as $gm) { ?>
+          <?php foreach ($games as $gm) { ?>
 
-          <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-10 before:bg-black before:opacity-60">
+            <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-10 before:bg-black before:opacity-60">
+              <div class="absolute z-50 top-4 right-4">
+                <form method="POST">
+                <input type="hidden" name="gameId_btn" value="<?= $gm["jeu_id"] ?>">
 
-            <div class="absolute z-50 top-4 right-4">
+                  <svg class="favoris_counter" xmlns="http://www.w3.org/2000/svg" width="30px" class="cursor-pointer fill-white shrink-0"
+                    viewBox="0 0 64 64">
+                    <path
+                      d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                      data-original="#000000"></path>
+                  </svg>
+                </form>
+              </div>
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" class="cursor-pointer fill-white shrink-0"
-                  viewBox="0 0 64 64">
-                  <path
-                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                    data-original="#000000"></path>
-                </svg>
-            </div>
 
-            <img src="<?= $gm["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
-            <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
-              <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d" , strtotime($gm["created_at"])) ?> </span>
-              <h3 class="text-xl font-bold text-white"><?= $gm["title"] ?></h3>
-              <div class="mt-4">
-                <p class="text-gray-200 text-md "><?= $gm["description"] ?></p>
-                <p class="text-gray-200 text-sm py-2"><?=  "Version : " . $gm["version"] ?></p>
+              <img src="<?= $gm["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
+              <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
+                <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($gm["created_at"])) ?> </span>
+                <h3 class="text-xl font-bold text-white"><?= $gm["title"] ?></h3>
+                <div class="mt-4">
+                  <p class="text-gray-200 text-md "><?= $gm["description"] ?></p>
+                  <p class="text-gray-200 text-sm py-2"><?= "Version : " . $gm["version"] ?></p>
+
+
+                </div>
               </div>
             </div>
-          </div>
 
 
           <?php } ?>
-        
+
         </div>
       </div>
     </div>
 
-   <?php include "../template/footer.php"; ?>
+    <?php include "../template/footer.php"; ?>
   </div>
-
-  
-
   <script>
-
     var toggleOpen = document.getElementById('toggleOpen');
     var toggleClose = document.getElementById('toggleClose');
     var collapseMenu = document.getElementById('collapseMenu');
 
     function handleClick() {
-    if (collapseMenu.style.display === 'block') {
+      if (collapseMenu.style.display === 'block') {
         collapseMenu.style.display = 'none';
-    } else {
+      } else {
         collapseMenu.style.display = 'block';
-    }
+      }
     }
 
     toggleOpen.addEventListener('click', handleClick);
     toggleClose.addEventListener('click', handleClick);
-
   </script>
-</body>
+
+  <script>
+
+document.querySelectorAll(".favoris_counter").forEach((counter)=>{
+  counter.addEventListener('click',function(){
+    const form=this.closest("form");
+    form.submit();
+  });
+});
+
+    
+  </script> 
+  
+
+
+
+
+
+
+
+    </body>
 
 </html>

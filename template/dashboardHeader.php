@@ -1,3 +1,4 @@
+
 <?php
 require_once "../config/database.php";
 require_once "../classes/User.php";
@@ -7,8 +8,6 @@ $user_id = $_SESSION["user_id"] ?? "";
 $username =  $user->getUser($user_id);
 
 ?>
-
-
 <header 
 class='z-50 bg-[#f7f6f9] sticky top-0 pt-8'>
           <div class='flex flex-wrap items-center w-full relative tracking-wide'>
