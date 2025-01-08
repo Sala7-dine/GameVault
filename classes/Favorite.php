@@ -42,7 +42,6 @@ class Favoris extends db{
 
     
         public function getUserFavoris($user_id){
-
             $query = "SELECT*FROM jeu JOIN favoris ON jeu.jeu_id=favoris.jeu_id WHERE user_id=:user_id;";
             $stmt = $this->connexion->prepare($query);
             $stmt->execute(['user_id'=>$user_id]);
@@ -66,6 +65,7 @@ class Favoris extends db{
 
 
         }
+
     
 
 
