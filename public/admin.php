@@ -122,7 +122,7 @@ $users = $user->getUsers();
 
         <!--------------------------------------------------- DASHBOARD ---------------------------------------------------------------->
 
-        <section id="dashboard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 hidden">
+        <section id="dashboard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
 
               <!-- Card 1 -->
               <div class="bg-white rounded-lg shadow p-6">
@@ -188,7 +188,7 @@ $users = $user->getUsers();
 
           <!------------------------------------------------ GESTION DES JEUX ------------------------------------------------------------->
 
-          <section class="flex flex-col items-center bg-gray-50 min-h-screen p-6">
+          <section id="Game" class="flex flex-col items-center bg-gray-50 min-h-screen p-6 hidden">
 
               <!-- <div class="bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] w-full pb-6 max-w-sm rounded-lg font-[sans-serif] overflow-hidden mx-auto">
                
@@ -286,7 +286,7 @@ $users = $user->getUsers();
                       <div class="font-[sans-serif] w-max">
                         <button type="button" id="ajoutBtn"
                           class="flex justify-center items-center gap-2 px-5 py-2.5 rounded text-white text-sm font-medium border-none outline-none bg-green-600 hover:bg-green-700 active:bg-green-600">
-                          <span>Ajouter Article</span>  
+                          <span>Ajouter Jeu</span>  
                           <i class="fa fa-plus" style="font-size:16px"></i>
                         </button>
                       </div>
@@ -295,8 +295,7 @@ $users = $user->getUsers();
 
                     <!-- Modal Ajouter Jeu -->
 
-                    <div id="ajoutModalArticle"
-                            class="fixed inset-0 p-4 hidden flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                    <div id="ajoutModalArticle" class="fixed inset-0 p-4 hidden flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                     <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative">
                         <div class="flex items-center">
                             <h3 class="text-orange-600 text-3xl font-bold flex-1 text-center w-full">Ajouter Game</h3>
@@ -361,7 +360,7 @@ $users = $user->getUsers();
 
 
                     
-                    
+
 
                     <!-- Fin Ajout Article -->
 
@@ -381,7 +380,7 @@ $users = $user->getUsers();
                       <div class="bg-white shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] w-full pb-6 max-w-sm rounded-lg font-[sans-serif] overflow-hidden mx-auto">
                
                               <div class="min-h-[240px]">
-                                <img src="https://readymadeui.com/cardImg.webp" class="w-full" />
+                                <img src="<?= $jeu["image"]; ?>" class="w-[400px] h-[200px]" />
                               </div>
 
                               <div class="px-6">
@@ -394,7 +393,7 @@ $users = $user->getUsers();
 
                                 <div class="flex gap-2">
 
-                                  <form method="POST">
+                                  <form action="updateJeu.php" method="POST">
                                     <input type="hidden" name="jeu_id" value="<?= $jeu["jeu_id"]; ?>">
                                     <button type="submit" name="updateBtn" class="mt-4 inline-block px-4 py-2 rounded tracking-wider bg-green-500 hover:bg-green-600 text-white text-[13px]">Update</button>
                                   </form>
@@ -570,12 +569,15 @@ $users = $user->getUsers();
   let dashboard = document.getElementById("dashboard");
   let user = document.getElementById("user");
   let userBtn = document.getElementById("userBtn");
+  let Game = document.getElementById("Game");
+  let GameBtn = document.getElementById("GameBtn");
 
 
   dashboardBtn.addEventListener("click" , ()=>{
 
     dashboard.style.display = "flex";
     user.style.display = "none";
+    Game.style.display = "none";
 
   });
 
@@ -584,6 +586,23 @@ $users = $user->getUsers();
 
     user.style.display = "flex";
     dashboard.style.display = "none";
+    Game.style.display = "none";
+
+  });
+
+  GameBtn.addEventListener("click" , ()=>{
+
+    Game.style.display = "flex";
+    dashboard.style.display = "none";
+    user.style.display = "none";
+
+  });
+
+  userBtn.addEventListener("click" , ()=>{
+
+    user.style.display = "flex";
+    dashboard.style.display = "none";
+    Game.style.display = "none";
 
   });
 
