@@ -100,7 +100,7 @@ if (isset($_POST['gameId_btn'])) {
 
             <div class="go_to_detail bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-0 before:bg-black before:opacity-60">
               
-              <a href="detaileGame.php?game_id=<?= $gm['jeu_id'] ?>" >
+              
               <div class="absolute z-5 top-4 right-4 flex flex-col justify-between">
                 <form method="POST">
                   <input type="hidden" name="gameId_btn" value="<?= $gm["jeu_id"] ?>">
@@ -114,7 +114,10 @@ if (isset($_POST['gameId_btn'])) {
 
               </div>
 
+
               <img src="<?= $gm["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
+              <a href="detaileGame.php?game_id=<?= $gm['jeu_id'] ?>" >
+
               <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
                 <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($gm["created_at"])) ?> </span>
                 <h3 class="hover:underline text-xl font-bold text-white"><?= $gm["title"] ?></h3>
