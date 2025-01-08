@@ -10,7 +10,7 @@ class Game extends db{
         $this->connexion = $this->connect();
     }
 
-    public function createGame($title, $image , $type , $version ,  $description,){
+    public function createGame($title, $image , $type , $version ,  $description){
         $query = "INSERT INTO jeu (title, description ,type, version , image) VALUES (:title, :description, :type , :version , :image)";
         $stmt = $this->connexion->prepare($query);
 
@@ -41,6 +41,18 @@ class Game extends db{
         
     }
 
+    public function getGame($jeu_id){
+
+        $query = "SELECT * FROM jeu where jeu_id = :id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(":id" ,$jeu_id);
+        $stmt->execute();
+        $game = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $game;
+        
+    }
+
 
     public function deleteGame($jeu_id){
 
@@ -55,6 +67,28 @@ class Game extends db{
             die("Erreur Lors de Suppression : " . $e);
         }
 
+    }
+
+
+    public function updateGame($jeu_id, $title, $image , $type , $version ,  $description){
+
+        $query = "UPDATE jeu SET title=:title,type=:type,version=:version,description=:description,image=:image where jeu_id=:id";
+
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':id', $jeu_id);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':version', $version);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':image', $image);
+
+        try {
+           
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            die("Erreur Lors Modification : " . $e);
+        }
     }
 
 
