@@ -1,3 +1,31 @@
+<?php
+require_once "../config/database.php";
+require_once "../classes/User.php";
+include_once "../classes/Game.php";
+
+
+
+$user = new users();
+
+$game = new Game();
+
+
+$user_id = $_SESSION["user_id"] ?? "";
+$currentUser =  $user->getUser($user_id);
+
+
+
+if(isset($_GET['game_id'])){
+   $game_id=$_GET['game_id'];
+    $currentGame=$game->getGame($game_id);
+  
+}
+
+
+
+?>
+
+
 <!doctype html>
 <html>
 <head>
@@ -51,7 +79,7 @@
       <div class="grid lg:grid-cols-2 gap-8 p-8">
         <!-- Main Image -->
         <div class="relative group">
-          <img src="/api/placeholder/800/500" alt="Game Main Image" class="w-full h-[500px] object-cover rounded-xl"/>
+          <img src="<?php echo $currentGame['image'];?>" alt="Game Main Image" class="w-full h-[500px] object-cover rounded-xl"/>
           <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl"></div>
           <button class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/40 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,19 +91,19 @@
         <!-- Game Info -->
         <div class="space-y-6 flex flex-col justify-center">
           <div>
-            <h1 class="text-5xl font-bold text-gray-800 mb-4">Game Title</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-4"><?php echo $currentGame['title'];?></h1>
             <div class="flex items-center space-x-4 mb-6">
-              <span class="px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-semibold text-sm rounded-full">Version 1.0</span>
+              <span class="px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-semibold text-sm rounded-full"><?php echo $currentGame['version'];?></span>
               <span class="text-gray-600 flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Released: 2024-01-08
+                <?php echo $currentGame['created_at'];?>
               </span>
             </div>
           </div>
           
-          <p class="text-gray-600 text-lg leading-relaxed">Experience an epic adventure in a breathtaking open world. Embark on a journey filled with mystery, danger, and unprecedented challenges.</p>
+          <p class="text-gray-600 text-lg leading-relaxed"><?php echo $currentGame['description'];?></p>
           
           <div class="flex flex-wrap gap-4 mt-4">
             <button class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
