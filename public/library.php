@@ -1,12 +1,4 @@
-<?php
-require_once "../config/database.php";
-require_once "../classes/User.php";
 
-$user = new users();
-$user_id = $_SESSION["user_id"] ?? "";
-$currentUser =  $user->getUser($user_id);
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
