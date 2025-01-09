@@ -2,12 +2,15 @@
 require_once "../config/database.php";
 require_once "../classes/User.php";
 include_once "../classes/Game.php";
+include_once "../classes/Library.php";
 
 
 
 $user = new users();
 
 $game = new Game();
+
+$library=new Library();
 
 
 $user_id = $_SESSION["user_id"] ?? "";
@@ -19,6 +22,29 @@ if(isset($_GET['game_id'])){
    $game_id=$_GET['game_id'];
     $currentGame=$game->getGame($game_id);
   
+}
+
+if(isset($_POST['add_to_library'])){
+  
+  if (empty($_SESSION["user_id"])){
+    header("location:login.php");
+  } else{
+  $jeu_id=$_POST['add_to_library'];
+  $add_to_library=$library->addToBiblio($user_id,$jeu_id);
+  if ($add_to_library) {
+    echo"<script>alert('Game added to your library list');</script>";
+    // header("location:library.php");
+
+
+  } else {
+    echo  "<script>alert('Game already added to your library.');</script>";
+    // header("location:library.php");
+
+
+  }
+
+  }
+
 }
 
 
@@ -108,12 +134,14 @@ if(isset($_GET['game_id'])){
           <p class="text-gray-600 text-lg leading-relaxed"><?php echo $currentGame['description'];?></p>
           
           <div class="flex flex-wrap gap-4 mt-4">
-            <button class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
+            <form action="" method="post">
+            <button name="add_to_library" value="<?php echo $currentGame['jeu_id'];?>" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
               Add to Library
             </button>
+            </form>
             <button class="px-8 py-4 bg-white border-2 border-orange-500 text-orange-500 rounded-xl hover:bg-orange-50 transition-all flex items-center">
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

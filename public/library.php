@@ -74,7 +74,7 @@ if (isset($_POST['gameDelete'])) {
         <!-- Games Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Game Card 1 -->
-
+      
             <?php foreach($all_collections as $collection){ ?>
             <div class="group bg-white rounded-xl overflow-hidden hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 border border-gray-200">
                 <div class="relative">
