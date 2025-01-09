@@ -52,12 +52,11 @@ if (isset($_POST['add_to_library'])) {
 if (isset($_POST['submit_chat'])) {
   if (empty($_SESSION["user_id"])) {
     header("location:login.php");
- 
-}else{
-  $content = $_POST['chat_content'];
-  $jeu_id = $_POST['submit_chat'];
-  $chat->add_comment_to_chat($user_id, $jeu_id, $content);
-}
+  } else {
+    $content = $_POST['chat_content'];
+    $jeu_id = $_POST['submit_chat'];
+    $chat->add_comment_to_chat($user_id, $jeu_id, $content);
+  }
 }
 $my_chat = $chat->display_my_chat($user_id, $game_id);
 $others_chat = $chat->display_others_chat($user_id, $game_id);
@@ -292,8 +291,9 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
 
         <!-- Chat Input -->
         <div class="p-6 border-t">
-          <div class="flex space-x-2">
-            <form action="" method="post">
+          <form action="" method="post">
+
+            <div class="flex space-x-2">
               <input name="chat_content" type="text" placeholder="Type your message..."
                 class="flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all" />
               <button name="submit_chat" value="<?php echo $currentGame['jeu_id']; ?>" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
@@ -301,8 +301,9 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0" />
                 </svg>
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
+
         </div>
       </div>
     </div>
