@@ -66,6 +66,8 @@ if(isset($_GET['game_id'])){
   </style>
 </head>
 <body class="min-h-screen">
+<?php include "../template/header.php"; ?>
+
   <!-- Decorative Background -->
   <div class="fixed inset-0 z-0 opacity-50">
     <div class="absolute inset-0 bg-gradient-to-br from-orange-100 via-white to-blue-100"></div>
@@ -244,5 +246,7 @@ if(isset($_GET['game_id'])){
       </div>
     </div>
   </div>
+  <?php include "../template/footer.php"; ?>
+
 </body>
 </html>
