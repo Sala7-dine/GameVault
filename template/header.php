@@ -60,7 +60,18 @@ $counter=$favoris->nb_favoris_element($user_id);
         </div>
 
         <div class='flex items-center sm:space-x-8 space-x-6'>
-          <a href="../public/favoris.php">
+        <?php
+          if (empty($_SESSION["user_id"])) {
+          ?>
+          <a href="../public/login.php">
+          <?php
+
+          }else{   ?>
+                    <a href="../public/favoris.php">
+                    <?php
+          }
+          ?>
+  
             <div class="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <div class="relative">
                 <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer fill-[#333] inline w-5 h-5"

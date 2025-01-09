@@ -17,22 +17,23 @@ $username =  $user->getUser($user_id);
 $favoris = new Favoris();
 
 if (isset($_POST['gameId_btn'])) {
-
-  $jeu_id = $_POST['gameId_btn'];
+  if (empty($_SESSION["user_id"])){
+    header("location:login.php");
+  } else{
+    $jeu_id = $_POST['gameId_btn'];
   $result = $favoris->add_favoris($user_id, $jeu_id);
   if ($result) {
-?>
-    <script>
-      alert("Game added to the favorites list.");
-    </script>
-  <?php
+    echo"<script>alert('Game added to the favorites list');</script>";
+
+
   } else {
-  ?>
-    <script>
-      alert("Game already added to the favorites list.");
-    </script>
-<?php
+    echo  "<script>alert(''Game already added to the favorites list.);</script>";
+
   }
+
+  }
+
+  
 }
 
 
@@ -164,6 +165,8 @@ if (isset($_POST['gameId_btn'])) {
         form.submit();
       });
     });
+
+    
 
 //     document.querySelectorAll(".go_to_detail").forEach((card) => {
 //   card.addEventListener("click", function () {
