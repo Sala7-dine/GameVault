@@ -61,8 +61,8 @@ if (isset($_POST['gameDeleteFavoris'])) {
 
                     <?php foreach ($all_favoris as $fv) { ?>
 
-                        <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-10 before:bg-black before:opacity-60 ">
-                            <div class="absolute z-50 top-4 right-4">
+                        <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-0 before:bg-black before:opacity-60 ">
+                            <div class="absolute z-50 top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <form method="POST">
                                     <input type="hidden" name="gameDeleteFavoris" value="<?= $fv["favoris_id"] ?>">
 
@@ -75,16 +75,20 @@ if (isset($_POST['gameDeleteFavoris'])) {
 
 
                             <img src="<?= $fv["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
-                            <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
-                                <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($fv["created_at"])) ?> </span>
-                                <h3 class="text-xl font-bold text-white"><?= $fv["title"] ?></h3>
-                                <div class="mt-4">
-                                    <p class="text-gray-200 text-md "><?= $fv["description"] ?></p>
-                                    <p class="text-gray-200 text-sm py-2"><?= "Version : " . $fv["version"] ?></p>
+                            <a href="detaileGame.php?game_id=<?= $fv['jeu_id'] ?>">
+
+                                <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
+                                    <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($fv["created_at"])) ?> </span>
+                                    <h3 class="text-xl font-bold text-white"><?= $fv["title"] ?></h3>
+                                    <div class="mt-4">
+                                        <p class="text-gray-200 text-md "><?= $fv["description"] ?></p>
+                                        <p class="text-gray-200 text-sm py-2"><?= "Version : " . $fv["version"] ?></p>
 
 
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+
                         </div>
 
 
