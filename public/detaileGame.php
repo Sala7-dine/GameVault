@@ -4,6 +4,7 @@ require_once "../classes/User.php";
 include_once "../classes/Game.php";
 include_once "../classes/Library.php";
 include_once "../classes/Chat.php";
+include_once "../classes/Rating.php";
 
 
 
@@ -52,17 +53,33 @@ if (isset($_POST['add_to_library'])) {
 if (isset($_POST['submit_chat'])) {
   if (empty($_SESSION["user_id"])) {
     header("location:login.php");
- 
-}else{
-  $content = $_POST['chat_content'];
-  $jeu_id = $_POST['submit_chat'];
-  $chat->add_comment_to_chat($user_id, $jeu_id, $content);
-}
+  } else {
+    $content = $_POST['chat_content'];
+    $jeu_id = $_POST['submit_chat'];
+    $chat->add_comment_to_chat($user_id, $jeu_id, $content);
+  }
 }
 $my_chat = $chat->display_my_chat($user_id, $game_id);
 $others_chat = $chat->display_others_chat($user_id, $game_id);
 
 
+
+// ---------------------------*
+$reviewObj = new Review(); 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $rating = $_POST['rating'];
+  $review = $_POST['review'];
+
+  if (empty($_SESSION["user_id"])) {
+    header("location:login.php");
+  } else {
+    $reviewObj->addReview($user_id, $game_id, $rating, $review);
+  }
+}
+
+$average_rating = $reviewObj->getAverageRating($game_id);
+$reviews = $reviewObj->getReviews($game_id);
 
 ?>
 
@@ -181,19 +198,19 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
       <h2 class="text-3xl font-bold mb-8 text-gray-800">Screenshots</h2>
       <div class="screenshot-grid grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="relative overflow-hidden rounded-xl group">
-          <img src="/api/placeholder/400/250" alt="Screenshot 1" class="w-full h-64 object-cover" />
+          <img src="<?php echo $currentGame['screenshot_1']; ?>" alt="Screenshot 1" class="w-full h-64 object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
             <p class="text-white p-4">Explore vast landscapes</p>
           </div>
         </div>
         <div class="relative overflow-hidden rounded-xl group">
-          <img src="/api/placeholder/400/250" alt="Screenshot 2" class="w-full h-64 object-cover" />
+          <img src="<?php echo $currentGame['screenshot_2']; ?>" alt="Screenshot 2" class="w-full h-64 object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
             <p class="text-white p-4">Epic boss battles</p>
           </div>
         </div>
         <div class="relative overflow-hidden rounded-xl group">
-          <img src="/api/placeholder/400/250" alt="Screenshot 3" class="w-full h-64 object-cover" />
+          <img src="<?php echo $currentGame['screenshot_3']; ?>" alt="Screenshot 3" class="w-full h-64 object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
             <p class="text-white p-4">Stunning visuals</p>
           </div>
@@ -201,25 +218,23 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
       </div>
     </div>
 
-    <!-- Reviews and Chat Section -->
     <div class="grid lg:grid-cols-3 gap-8">
-      <!-- Reviews Section -->
       <div class="lg:col-span-2 space-y-6">
         <div class="game-card rounded-2xl p-8 shadow-sm">
           <div class="flex items-center justify-between mb-8">
             <h2 class="text-3xl font-bold text-gray-800">Reviews</h2>
             <div class="flex items-center space-x-2">
-              <span class="text-4xl font-bold text-orange-500">4.8</span>
+              <span class="text-4xl font-bold text-orange-500"><?= round($average_rating, 1); ?> / 5</span>
               <div class="text-yellow-400 text-2xl">★★★★★</div>
             </div>
           </div>
 
           <!-- Review Card -->
-          <div class="space-y-6">
+          <!-- <div class="space-y-6">
             <div class="border-b border-gray-200 pb-6">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-4">
-                  <img src="/api/placeholder/48/48" alt="User Avatar" class="w-12 h-12 rounded-full ring-2 ring-orange-500" />
+                  <img src="data:image/jpeg;base64,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" alt="User Avatar" class="w-12 h-12 rounded-full ring-2 ring-orange-500" />
                   <div>
                     <h3 class="font-semibold text-lg">John Doe</h3>
                     <div class="flex text-yellow-400">★★★★★</div>
@@ -229,10 +244,36 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
               </div>
               <p class="text-gray-600">Absolutely stunning game! The attention to detail in the world design is remarkable. Combat feels fluid and responsive, and the story had me hooked from the start.</p>
             </div>
-          </div>
+          </div> -->
+          <div class="mt-8">
+    <div class="space-y-6">
+        <?php foreach ($reviews as $review){ ?>
+            <div class="border-b border-gray-200 pb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4">
+                        <img src="data:image/jpeg;base64,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 alt="User Avatar" class="w-12 h-12 rounded-full ring-2 ring-orange-500" />
+                        <div>
+                            <h3 class="font-semibold text-lg"><?= htmlspecialchars($review['username']); ?></h3>
+                            <div class="flex text-yellow-400">
+                                <?php for ($i = 0; $i < $review['rating']; $i++){ ?>
+                                    ★
+                                <?php }; ?>
+                                <?php for ($i = $review['rating']; $i < 5; $i++){ ?>
+                                    <span class="text-gray-300">★</span>
+                                <?php }; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="text-gray-500 text-sm"><?= htmlspecialchars($review['created_at']); ?></span>
+                </div>
+                <p class="text-gray-600"><?= htmlspecialchars($review['review']); ?></p>
+            </div>
+        <?php }; ?>
+    </div>
+</div>
 
           <!-- Add Review Form -->
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <h3 class="font-semibold text-xl mb-4">Write a Review</h3>
             <div class="flex text-3xl text-gray-300 space-x-2 mb-4 cursor-pointer">
               <span class="hover:text-yellow-400 transition-colors">★</span>
@@ -245,7 +286,30 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
             <button class="mt-4 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all">
               Submit Review
             </button>
-          </div>
+          </div> -->
+
+          <div class="mt-8">
+    <h3 class="font-semibold text-xl mb-4">Write a Review</h3>
+    <form method="POST" id="review-form">
+        <div class="flex text-3xl text-gray-300 space-x-2 mb-4 cursor-pointer" id="rating-stars">
+            <span data-value="1">★</span>
+            <span data-value="2">★</span>
+            <span data-value="3">★</span>
+            <span data-value="4">★</span>
+            <span data-value="5">★</span>
+        </div>
+        <textarea class="w-full p-4 border rounded-xl resize-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            rows="4" name="review" placeholder="Share your thoughts about this game..."></textarea>
+        <input type="hidden" name="rating" id="rating-input">
+        <button type="submit"
+            class="mt-4 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all">
+            Submit Review
+        </button>
+    </form>
+</div>
+
+
+
         </div>
       </div>
 
@@ -292,8 +356,8 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
 
         <!-- Chat Input -->
         <div class="p-6 border-t">
-          <div class="flex space-x-2">
-            <form action="" method="post">
+          <form action="" method="post">
+            <div class="flex space-x-2">
               <input name="chat_content" type="text" placeholder="Type your message..."
                 class="flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all" />
               <button name="submit_chat" value="<?php echo $currentGame['jeu_id']; ?>" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
@@ -301,13 +365,30 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0" />
                 </svg>
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
+
         </div>
       </div>
     </div>
   </div>
   <?php include "../template/footer.php"; ?>
+
+  <script>
+    const stars = document.querySelectorAll('#rating-stars span');
+    const ratingInput = document.getElementById('rating-input');
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            stars.forEach(s => s.classList.remove('text-yellow-400'));
+            for (let i = 0; i < star.dataset.value; i++) {
+                stars[i].classList.add('text-yellow-400');
+            }
+        });
+        star.addEventListener('click', () => {
+            ratingInput.value = star.dataset.value;
+        });
+    });
+</script>
 
 </body>
 
