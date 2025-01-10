@@ -5,6 +5,7 @@ include_once "../classes/Game.php";
 include_once "../classes/Library.php";
 include_once "../classes/Chat.php";
 include_once "../classes/Rating.php";
+include_once "../classes/History.php";
 
 
 
@@ -16,6 +17,8 @@ $game = new Game();
 $library = new Library();
 
 $chat = new Chat();
+
+$history = new History();
 
 
 $user_id = $_SESSION["user_id"] ?? "";
@@ -35,8 +38,9 @@ if (isset($_POST['add_to_library'])) {
   } else {
     $jeu_id = $_POST['add_to_library'];
     $add_to_library = $library->addToBiblio($user_id, $jeu_id);
-    if ($add_to_library) {
+    $history->addToHistory($user_id,$jeu_id);
 
+    if ($add_to_library) {
       echo "<script>alert('Game added to your library list');</script>";
       // header("location:library.php");
 
@@ -67,7 +71,7 @@ $others_chat = $chat->display_others_chat($user_id, $game_id);
 // ---------------------------*
 $reviewObj = new Review(); 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['submit_review'])) {
   $rating = $_POST['rating'];
   $review = $_POST['review'];
 
@@ -301,7 +305,7 @@ $reviews = $reviewObj->getReviews($game_id);
         <textarea class="w-full p-4 border rounded-xl resize-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
             rows="4" name="review" placeholder="Share your thoughts about this game..."></textarea>
         <input type="hidden" name="rating" id="rating-input">
-        <button type="submit"
+        <button type="submit" name="submit_review"
             class="mt-4 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all">
             Submit Review
         </button>

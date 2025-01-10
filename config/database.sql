@@ -14,11 +14,11 @@ CREATE TABLE users (
 -- Table Admin (hérite de Users)
 CREATE TABLE Admin (
     admin_id INT PRIMARY KEY,
-    FOREIGN KEY (admin_id) REFERENCES Users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (admin_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- Table Jeu
-CREATE TABLE Jeu (
+CREATE TABLE jeu (
     jeu_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     description TEXT,
@@ -31,9 +31,9 @@ CREATE TABLE Jeu (
     image text NOT NULL
 );
 
-ALTER TABLE Jeu ADD COLUMN screenshot_1 text NOT NULL;
-ALTER TABLE Jeu ADD COLUMN screenshot_2 text NOT NULL;
-ALTER TABLE Jeu ADD COLUMN screenshot_3 text NOT NULL;
+ALTER TABLE jeu ADD COLUMN screenshot_1 text NOT NULL;
+ALTER TABLE jeu ADD COLUMN screenshot_2 text NOT NULL;
+ALTER TABLE jeu ADD COLUMN screenshot_3 text NOT NULL;
 
 -- Table Chat **********
 CREATE TABLE chat (
@@ -42,7 +42,7 @@ CREATE TABLE chat (
     jeu_id INT, 
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (jeu_id) REFERENCES Jeu(jeu_id) ON DELETE CASCADE,
+    FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE bibliotheque (
     jeu_id INT,
     date_achat DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (jeu_id) REFERENCES Jeu(jeu_id) ON DELETE CASCADE
+    FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
 
 -- Table Notation
@@ -76,7 +76,7 @@ CREATE TABLE notation (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (jeu_id) REFERENCES Jeu(jeu_id) ON DELETE CASCADE
+    FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
 
 
@@ -86,19 +86,19 @@ CREATE TABLE Favoris(
     user_id INT,
     jeu_id INT, 
     add_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (jeu_id) REFERENCES Jeu(jeu_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
 
 
 
 
 -- Table Historique
-CREATE TABLE Historique (
+CREATE TABLE historique (
     his_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     jeu_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (jeu_id) REFERENCES Jeu(jeu_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
