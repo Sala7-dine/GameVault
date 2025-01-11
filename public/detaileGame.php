@@ -26,9 +26,11 @@ $currentUser =  $user->getUser($user_id);
 
 
 
-if (isset($_GET['game_id'])) {
-  $game_id = $_GET['game_id'];
-  $currentGame = $game->getGame($game_id);
+if(isset($_GET['game_id'])){
+
+   $game_id=$_GET['game_id'];
+   $currentGame=$game->getGame($game_id);
+  
 }
 
 if (isset($_POST['add_to_library'])) {
@@ -136,11 +138,13 @@ $reviews = $reviewObj->getReviews($game_id);
 </head>
 
 <body class="min-h-screen">
-  <?php include "../template/header.php"; ?>
+
+
+  <?php include_once "../template/header.php"; ?>
 
   <!-- Decorative Background -->
   <div class="fixed inset-0 z-0 opacity-50">
-    <div class="absolute inset-0 bg-gradient-to-br from-orange-100 via-white to-blue-100"></div>
+    <div class="absolute"></div>
     <div class="absolute top-0 left-0 w-full h-full bg-[url('https://readymadeui.com/bg-effect.svg')] bg-no-repeat bg-cover opacity-30"></div>
   </div>
 
@@ -178,14 +182,24 @@ $reviews = $reviewObj->getReviews($game_id);
           <p class="text-gray-600 text-lg leading-relaxed"><?php echo $currentGame['description']; ?></p>
 
           <div class="flex flex-wrap gap-4 mt-4">
-            <form action="" method="post">
-              <button name="add_to_library" value="<?php echo $currentGame['jeu_id']; ?>" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
+
+            <form action="library.php" method="POST">
+
+              <input type="hidden" name="user_id" value="<?= $currentUser['user_id'] ?>">
+              <input type="hidden" name="jeu_id" value="<?= $_GET['game_id'] ?>">
+
+              <button type="submit" name="submit" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 Add to Library
               </button>
+
+
+
             </form>
+            
+
             <button class="px-8 py-4 bg-white border-2 border-orange-500 text-orange-500 rounded-xl hover:bg-orange-50 transition-all flex items-center">
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -376,6 +390,7 @@ $reviews = $reviewObj->getReviews($game_id);
       </div>
     </div>
   </div>
+
   <?php include "../template/footer.php"; ?>
 
   <script>
