@@ -27,7 +27,7 @@ if(isset($_POST["submit"])){
 
   $collections->addToBiblio($user_id , intval($jeu_id));
 
-  header("Location:detaileGame.php");
+  header("Location: detaileGame.php?game_id=" . urlencode($jeu_id));
 
 }
 

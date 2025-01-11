@@ -11,7 +11,7 @@ $game = new Game();
 $games = $game->getGames();
 
 $user = new users();
-$user_id = $_SESSION["user_id"] ?? "";
+$user_id = $_SESSION["user_id"] ?? "";      
 $username =  $user->getUser($user_id);
 
 $favoris = new Favoris();
@@ -117,6 +117,9 @@ if (isset($_POST['gameId_btn'])) {
 
 
               <img src="<?= $gm["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
+
+
+              
               <a href="detaileGame.php?game_id=<?= $gm['jeu_id'] ?>" >
 
               <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
@@ -130,6 +133,7 @@ if (isset($_POST['gameId_btn'])) {
                 </div>
               </div>
               </a>
+
             </div>
 
 
