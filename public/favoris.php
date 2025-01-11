@@ -61,8 +61,8 @@ if (isset($_POST['gameDeleteFavoris'])) {
 
                     <?php foreach ($all_favoris as $fv) { ?>
 
-                        <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-10 before:bg-black before:opacity-60">
-                            <div class="absolute z-50 top-4 right-4">
+                        <div class="bg-white rounded-lg overflow-hidden group relative before:absolute before:inset-0 before:z-0 before:bg-black before:opacity-60 ">
+                            <div class="absolute z-50 top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <form method="POST">
                                     <input type="hidden" name="gameDeleteFavoris" value="<?= $fv["favoris_id"] ?>">
 
@@ -70,24 +70,25 @@ if (isset($_POST['gameDeleteFavoris'])) {
                                         <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z"></path>
                                     </svg>
 
-
-
-
                                 </form>
                             </div>
 
 
                             <img src="<?= $fv["image"] ?>" alt="Blog Post 1" class="w-full h-96 object-cover group-hover:scale-110 transition-all duration-300" />
-                            <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
-                                <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($fv["created_at"])) ?> </span>
-                                <h3 class="text-xl font-bold text-white"><?= $fv["title"] ?></h3>
-                                <div class="mt-4">
-                                    <p class="text-gray-200 text-md "><?= $fv["description"] ?></p>
-                                    <p class="text-gray-200 text-sm py-2"><?= "Version : " . $fv["version"] ?></p>
+                            <a href="detaileGame.php?game_id=<?= $fv['jeu_id'] ?>">
+
+                                <div class="p-6 absolute bottom-0 left-0 right-0 z-20">
+                                    <span class="text-sm block mb-2 text-yellow-400 font-semibold"> <?php echo "Created At : " . DATE("Y-m-d", strtotime($fv["created_at"])) ?> </span>
+                                    <h3 class="text-xl font-bold text-white"><?= $fv["title"] ?></h3>
+                                    <div class="mt-4">
+                                        <p class="text-gray-200 text-md "><?= $fv["description"] ?></p>
+                                        <p class="text-gray-200 text-sm py-2"><?= "Version : " . $fv["version"] ?></p>
 
 
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+
                         </div>
 
 

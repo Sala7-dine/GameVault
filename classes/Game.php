@@ -10,8 +10,8 @@ class Game extends db{
         $this->connexion = $this->connect();
     }
 
-    public function createGame($title, $image , $type , $version ,  $description){
-        $query = "INSERT INTO jeu (title, description ,type, version , image) VALUES (:title, :description, :type , :version , :image)";
+    public function createGame($title, $image , $type , $version ,  $description,$screenshot_1,$screenshot_2,$screenshot_3){
+        $query = "INSERT INTO jeu (title, description ,type, version , image ,screenshot_1,screenshot_2,screenshot_3) VALUES (:title, :description, :type , :version , :image,:screenshot_1,:screenshot_2,:screenshot_3)";
         $stmt = $this->connexion->prepare($query);
 
         $stmt->bindParam(':title', $title);
@@ -19,6 +19,9 @@ class Game extends db{
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':version', $version);
         $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':screenshot_1', $screenshot_1);
+        $stmt->bindParam(':screenshot_2', $screenshot_2);
+        $stmt->bindParam(':screenshot_3', $screenshot_3);
 
         try {
             $stmt->execute();
@@ -70,9 +73,9 @@ class Game extends db{
     }
 
 
-    public function updateGame($jeu_id, $title, $image , $type , $version ,  $description){
+    public function updateGame($jeu_id, $title, $image , $type , $version ,  $description ,$screenshot_1,$screenshot_2,$screenshot_3){
 
-        $query = "UPDATE jeu SET title=:title,type=:type,version=:version,description=:description,image=:image where jeu_id=:id";
+        $query = "UPDATE jeu SET title=:title,type=:type,version=:version,description=:description,image=:image,screenshot_1=:screenshot_1,screenshot_2=:screenshot_2,screenshot_3=:screenshot_3 where jeu_id=:id";
 
         $stmt = $this->connexion->prepare($query);
         $stmt->bindParam(':id', $jeu_id);
@@ -81,6 +84,9 @@ class Game extends db{
         $stmt->bindParam(':version', $version);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':screenshot_1', $screenshot_1);
+        $stmt->bindParam(':screenshot_2', $screenshot_2);
+        $stmt->bindParam(':screenshot_3', $screenshot_3);
 
         try {
            

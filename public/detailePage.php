@@ -106,6 +106,8 @@ if (isset($_POST['submit_edited_info'])) {
             </form>
         </div>
     </section>
+    <?php include "../template/footer.php"; ?>
+
 
 
 

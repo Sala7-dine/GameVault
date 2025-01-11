@@ -19,8 +19,12 @@ if(isset($_POST["submit"])){
     $type = $_POST["type"];
     $version = $_POST["version"];
     $image = $_POST["image"];
+    // --------------sceenshots------------------
+  $screenshot_1 = $_POST["screenshot_1"];
+  $screenshot_2 = $_POST["screenshot_2"];
+  $screenshot_3= $_POST["screenshot_3"];
 
-    $resultGame = $game->updateGame($id , $titre , $image , $type , $version , $description);
+    $resultGame = $game->updateGame($id , $titre , $image , $type , $version , $description,$screenshot_1,$screenshot_2,$screenshot_3);
 
     header("Location:admin.php");
 }
@@ -99,6 +103,24 @@ if(isset($_POST["submit"])){
                                 <textarea placeholder='Saisir la description...' name="description"
                                     class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-orange-600 focus:bg-transparent rounded-lg" rows="3"><?= $jeu["description"] ?? ""; ?></textarea>
                             </div>
+                            <!-- ----------------------------------------------screenshots------------------------------------------ -->
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Screenshot 1</label>
+                      <input type="text" name="screenshot_1" placeholder="Saisir type..."
+                        class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-orange-600 focus:bg-transparent rounded-lg" />
+                    </div>
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Screenshot 2</label>
+                      <input type="text" name="screenshot_2" placeholder="Saisir type..."
+                        class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-orange-600 focus:bg-transparent rounded-lg" />
+                    </div>
+                    <div>
+                      <label class="text-gray-800 text-sm mb-2 block">Screenshot 3</label>
+                      <input type="text" name="screenshot_3" placeholder="Saisir type..."
+                        class="px-4 py-3 bg-gray-100 w-full text-gray-800 text-sm border-none focus:outline-orange-600 focus:bg-transparent rounded-lg" />
+                    </div>
+
+                    <!-- ------------------------------------------------------------------------------------------------------ -->
 
                             <div class="flex justify-end gap-4 !mt-8">
                                 <a href="admin.php" id="ajouteCancelQuiz"
