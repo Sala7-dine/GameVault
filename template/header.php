@@ -126,7 +126,7 @@ $counter = $favoris->nb_favoris_element($user_id);
                           Account</a>
                         <hr class="my-2 -mx-2" />
 
-                        <a href="../public/index.php"
+                        <a href="../public/admin.php"
                           class="text-sm text-gray-800 cursor-pointer flex items-center p-2 rounded-md hover:bg-[#ffece1] dropdown-item transition duration-300 ease-in-out">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             class="w-[18px] h-[18px] mr-4 fill-current" viewBox="0 0 24 24">

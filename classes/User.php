@@ -105,7 +105,6 @@ class users extends db
         return $stmt->fetch();
     }
 
-
     public function UpdateRole($user_id, $role)
     {
 
