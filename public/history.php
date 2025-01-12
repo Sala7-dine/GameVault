@@ -64,9 +64,9 @@ if (isset($_POST['gameDelete'])) {
                         </form>
                         
                     </div>
-                    <div class="absolute bottom-2 left-2">
+                    <!-- <div class="absolute bottom-2 left-2">
                         <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm shadow-sm">En cours</span>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="p-4">
                     <div class="flex justify-between items-start">

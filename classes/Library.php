@@ -4,8 +4,6 @@ include_once '../config/database.php';
 class Library extends db{
 
     private $connexion;
-    
-
     public function __construct(){
          
         $this->connexion = $this->connect();
@@ -50,10 +48,30 @@ class Library extends db{
     
     try{
         $stmt->execute();
-        return 1;
+        return true;
     }catch(PDOException $e){
         die("Erreur Lors de Suppression : " . $e);
     }
+    }
+
+    function updateStatus($status,$bib_id){
+        $query ="UPDATE bibliotheque SET status=:status WHERE bib_id =:bib_id";
+
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':bib_id', $bib_id);
+
+        try {
+           
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            die("Erreur Lors Modification : " . $e);
+        }
+    }
+
+    
+
 
 
     }
@@ -64,7 +82,7 @@ class Library extends db{
 
 
     
-}
+
 
 
 
