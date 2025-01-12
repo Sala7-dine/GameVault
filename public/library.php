@@ -68,13 +68,25 @@ if (isset($_POST['change_status'])) {
 
 if (isset($_POST['gameDelete'])) {
 
-    $gameDelete = $_POST['gameDelete'];
-    $result = $collections->delete($gameDelete);
-    if ($result) {
-        header("location:library.php?game_deleted");
-    } else {
-        header("location:library.php?game_already_added");
-    }
+  $gameDelete = $_POST['gameDelete'];
+  $result = $collections->delete($gameDelete);
+  if ($result) {
+      header("location:library.php?game_deleted");
+  } else {
+      header("location:library.php?game_already_added");
+  }
+
+}
+
+if(isset($_POST["submit"])){
+
+  $jeu_id = $_POST["jeu_id"];
+  $user_id = $_POST["user_id"];
+
+  $collections->addToBiblio($user_id , intval($jeu_id));
+
+  header("Location: detaileGame.php?game_id=" . urlencode($jeu_id));
+
 }
 // if (isset($_POST['change_status'])) {
 //     $bib_id = $_POST['bib_id_submit'];

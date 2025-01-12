@@ -8,27 +8,32 @@ include_once "../classes/Rating.php";
 include_once "../classes/History.php";
 
 
-
-
 $user = new users();
-
 $game = new Game();
-
 $library = new Library();
-
 $chat = new Chat();
-
 $history = new History();
+
+if (empty($_SESSION["user_id"])) {
+  header("Location:login.php");
+}
+
 
 
 $user_id = $_SESSION["user_id"] ?? "";
 $currentUser =  $user->getUser($user_id);
+$isSuspended = $currentUser["status"] === "suspended" ? true : false;
 
 
+if(isset($_GET['game_id'])){
 
-if (isset($_GET['game_id'])) {
-  $game_id = $_GET['game_id'];
-  $currentGame = $game->getGame($game_id);
+  $game_id=$_GET['game_id'];
+  $currentGame=$game->getGame($game_id);
+  
+}else{
+
+  header("Location: login.php");
+
 }
 
 if (isset($_POST['add_to_library'])) {
@@ -136,11 +141,13 @@ $reviews = $reviewObj->getReviews($game_id);
 </head>
 
 <body class="min-h-screen">
-  <?php include "../template/header.php"; ?>
+
+
+  <?php include_once "../template/header.php"; ?>
 
   <!-- Decorative Background -->
   <div class="fixed inset-0 z-0 opacity-50">
-    <div class="absolute inset-0 bg-gradient-to-br from-orange-100 via-white to-blue-100"></div>
+    <div class="absolute"></div>
     <div class="absolute top-0 left-0 w-full h-full bg-[url('https://readymadeui.com/bg-effect.svg')] bg-no-repeat bg-cover opacity-30"></div>
   </div>
 
@@ -178,14 +185,24 @@ $reviews = $reviewObj->getReviews($game_id);
           <p class="text-gray-600 text-lg leading-relaxed"><?php echo $currentGame['description']; ?></p>
 
           <div class="flex flex-wrap gap-4 mt-4">
-            <form action="" method="post">
-              <button name="add_to_library" value="<?php echo $currentGame['jeu_id']; ?>" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
+
+            <form action="library.php" method="POST">
+
+              <input type="hidden" name="user_id" value="<?= $currentUser['user_id'] ?>">
+              <input type="hidden" name="jeu_id" value="<?= $_GET['game_id'] ?>">
+
+              <button type="submit" name="submit" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 Add to Library
               </button>
+
+
+
             </form>
+            
+
             <button class="px-8 py-4 bg-white border-2 border-orange-500 text-orange-500 rounded-xl hover:bg-orange-50 transition-all flex items-center">
               <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -310,7 +327,21 @@ $reviews = $reviewObj->getReviews($game_id);
             Submit Review
         </button>
     </form>
-</div>
+
+
+    <!-- Modal -->
+<!-- <div id="suspended-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Votre compte est suspendu</h2>
+        <p>Vous ne pouvez pas soumettre une revue tant que votre compte est suspendu.</p>
+        <button id="close-modal" class="mt-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
+            Fermer
+        </button>
+    </div>
+</div>-->
+</div> 
+
+
 
 
 
@@ -360,7 +391,7 @@ $reviews = $reviewObj->getReviews($game_id);
 
         <!-- Chat Input -->
         <div class="p-6 border-t">
-          <form action="" method="post">
+          <form action="" method="post" id="review-chat">
             <div class="flex space-x-2">
               <input name="chat_content" type="text" placeholder="Type your message..."
                 class="flex-1 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all" />
@@ -376,6 +407,38 @@ $reviews = $reviewObj->getReviews($game_id);
       </div>
     </div>
   </div>
+
+  <div id="suspended-modal" class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif] hidden">
+            <div class="w-full max-w-md bg-white shadow-lg rounded-xl p-6 relative">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-3.5 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                    <path
+                        d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+                        data-original="#000000"></path>
+                    <path
+                        d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+                        data-original="#000000"></path>
+                </svg>
+
+                <div class="my-8 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 fill-red-500 inline" viewBox="0 0 286.054 286.054">
+                        <path fill="#e2574c"
+                            d="M143.027 0C64.04 0 0 64.04 0 143.027c0 78.996 64.04 143.027 143.027 143.027 78.996 0 143.027-64.022 143.027-143.027C286.054 64.04 222.022 0 143.027 0zm0 259.236c-64.183 0-116.209-52.026-116.209-116.209S78.844 26.818 143.027 26.818s116.209 52.026 116.209 116.209-52.026 116.209-116.209 116.209zm.009-196.51c-10.244 0-17.995 5.346-17.995 13.981v79.201c0 8.644 7.75 13.972 17.995 13.972 9.994 0 17.995-5.551 17.995-13.972V76.707c-.001-8.43-8.001-13.981-17.995-13.981zm0 124.997c-9.842 0-17.852 8.01-17.852 17.86 0 9.833 8.01 17.843 17.852 17.843s17.843-8.01 17.843-17.843c-.001-9.851-8.001-17.86-17.843-17.86z"
+                            data-original="#e2574c" />
+                    </svg>
+
+                    <h4 class="text-lg text-gray-800 font-semibold mt-6">Vous ne pouvez pas soumettre</h4>
+                    <p class="text-sm text-gray-500 mt-2">votre compte est suspendu.</p>
+                </div>
+
+                <div class="flex max-sm:flex-col gap-4">
+                    <button type="button" id="close-modal"
+                        class="px-5 py-2.5 rounded-lg w-full tracking-wide text-white text-sm border-none outline-none bg-red-500 hover:bg-red-600">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+
   <?php include "../template/footer.php"; ?>
 
   <script>
@@ -392,6 +455,39 @@ $reviews = $reviewObj->getReviews($game_id);
             ratingInput.value = star.dataset.value;
         });
     });
+
+
+
+    // JavaScript logique
+    const isSuspended = <?php echo json_encode($isSuspended); ?>;
+    const form = document.getElementById('review-form');
+    const chatForm = document.getElementById('review-chat');
+    const modal = document.getElementById('suspended-modal');
+    const closeModal = document.getElementById('close-modal');
+
+    // Empêcher la soumission si suspendu
+    form.addEventListener('submit', function (e) {
+        if (isSuspended) {
+            e.preventDefault(); // Bloque la soumission du formulaire
+            modal.classList.remove('hidden'); // Affiche le modal
+        }
+    });
+
+    // Empêcher la soumission si suspendu
+    chatForm.addEventListener('submit', function (e) {
+        if (isSuspended) {
+            e.preventDefault(); // Bloque la soumission du formulaire
+            modal.classList.remove('hidden'); // Affiche le modal
+        }
+    });
+
+
+
+    // Fermer le modal
+    closeModal.addEventListener('click', function () {
+        modal.classList.add('hidden');
+    });
+
 </script>
 
 </body>
