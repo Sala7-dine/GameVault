@@ -65,6 +65,8 @@ CREATE TABLE bibliotheque (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
+ALTER TABLE bibliotheque ADD COLUMN status ENUM('In progress', 'Completed', 'Abandoned') DEFAULT 'In progress';
+;
 
 -- Table Notation
 CREATE TABLE notation (
@@ -102,3 +104,4 @@ CREATE TABLE historique (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (jeu_id) REFERENCES jeu(jeu_id) ON DELETE CASCADE
 );
+

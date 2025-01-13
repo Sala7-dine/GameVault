@@ -49,7 +49,7 @@ if(isset($_POST["submit"])){
 
     <?php require_once "../template/sidebar.php" ?>
 
-    <section class="main-content w-full px-8"">
+    <section class="main-content w-full px-8">
         <?php include "../template/dashboardHeader.php"; ?>
 
         <div id="ajoutModalArticle" class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">

@@ -189,7 +189,7 @@ $reviews = $reviewObj->getReviews($game_id);
             <form action="library.php" method="POST">
 
               <input type="hidden" name="user_id" value="<?= $currentUser['user_id'] ?>">
-              <input type="hidden" name="jeu_id" value="<?= $_GET['game_id'] ?>">
+              <input type="hidden" name="jeu_id" value="<?= $currentGame['jeu_id'] ?>">
 
               <button type="submit" name="submit" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
