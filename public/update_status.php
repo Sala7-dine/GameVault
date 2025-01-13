@@ -4,12 +4,14 @@ include_once "../classes/Game.php";
 include_once "../classes/Library.php";
 
 
-$user_id = $_SESSION["user_id"] ?? "";
-$collections = new Library();
+// $user_id = $_SESSION["user_id"] ?? "";
+// $collections = new Library();
 
 
 // if (isset($_POST['change_status'])) {
 //     $bib_id = $_POST['bib_id_submit'];
+//     $bibo=$collections->getbibo($bib_id);
+
 // }
 
 
@@ -70,6 +72,8 @@ $collections = new Library();
             </div>
 
             <form class="space-y-4 mt-8" method="post" autocomplete="off">
+            <input type="hidden" name="bib_id_submit" value="<?= $bibo["bib_id"] ?>">
+
 
                 <div class="flex ">
                     <input type="radio" name="status" value="In progress" />

@@ -30,6 +30,18 @@ class Library extends db{
 
     }
 
+    public function getbibo($bib_id){
+
+        $query = "SELECT * FROM bibliotheque where bib_id = :bib_id";
+        $stmt = $this->connexion->prepare($query);
+        $stmt->bindParam(":bib_id" ,$bib_id);
+        $stmt->execute();
+        $bibo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $bibo;
+        
+    }
+
     
     public function getUserBiblio($user_id){
 
